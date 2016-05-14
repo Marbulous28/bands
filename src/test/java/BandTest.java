@@ -30,4 +30,13 @@ public class BandTest {
     assertTrue(thisBand.equals(thatBand));
   }
 
+  @Test
+  public void save_savesBandIntoDatabase_true() {
+    Band newBand = new Band("Arctic Monkeys");
+    newBand.save();
+    assertTrue(Band.all().get(0).equals(newBand));
+  }
+
+
+
 }
