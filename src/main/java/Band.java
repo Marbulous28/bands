@@ -37,12 +37,41 @@ public class Band {
   }
 
   public void save() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO bands(name) VALUES (:name)";
+      this.id = (int) con.createQuery(sql, true)
+        .addParameter("name", this.name)
+        .executeUpdate()
+        .getKey();
+    }
+  }
+
+  public static Band find(int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM bands where id=:id";
+      Band dataBaseBand = con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetchFirst(Band.class);
+      return dataBaseBand;
+    }
+  }
+
+  public void update(String newName) {
    try(Connection con = DB.sql2o.open()) {
-     String sql = "INSERT INTO bands(name) VALUES (:name)";
-     this.id = (int) con.createQuery(sql, true)
-       .addParameter("name", this.name)
-       .executeUpdate()
-       .getKey();
+     String sql = "UPDATE bands SET name = :name WHERE id = :id";
+     con.createQuery(sql)
+       .addParameter("name", newName)
+       .addParameter("id", this.id)
+       .executeUpdate();
+   }
+ }
+
+ public void delete() {
+   try(Connection con = DB.sql2o.open()) {
+   String sql = "DELETE FROM bands WHERE id = :id;";
+   con.createQuery(sql)
+     .addParameter("id", this.id)
+     .executeUpdate();
    }
  }
 

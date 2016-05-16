@@ -37,6 +37,28 @@ public class BandTest {
     assertTrue(Band.all().get(0).equals(newBand));
   }
 
+  @Test
+  public void find_findsBandInDatabase_true() {
+    Band newBand = new Band("Arctic Monkeys");
+    newBand.save();
+    Band savedBand = Band.find(newBand.getId());
+    assertTrue(newBand.equals(savedBand));
+  }
 
+  @Test
+  public void update_updatesBandName_true() {
+    Band newBand = new Band("Arctic Monkeys");
+    newBand.save();
+    newBand.update("Radio Head");
+    assertEquals("Radio Head", Band.find(newBand.getId()).getName());
+  }
 
+  @Test
+  public void delete_deletesBand_true() {
+    Band newBand = new Band("Arctic Monkeys");
+    newBand.save();
+    int newBandId = newBand.getId();
+    newBand.delete();
+    assertEquals(null, Band.find(newBandId));
+  }
 }
