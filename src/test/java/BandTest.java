@@ -1,6 +1,7 @@
 import org.sql2o.*;
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.util.List;
 
 public class BandTest {
 
@@ -60,5 +61,27 @@ public class BandTest {
     int newBandId = newBand.getId();
     newBand.delete();
     assertEquals(null, Band.find(newBandId));
+  }
+
+  @Test
+  public void addVenue_addsVenueToBand() {
+    Venue newVenue = new Venue("Glastonburry");
+    newVenue.save();
+    Band newBand = new Band("Arctic Monkey");
+    newBand.save();
+    newBand.addVenue(newVenue);
+    Venue savedVenue = newBand.getVenues().get(0);
+    assertTrue(newVenue.equals(savedVenue));
+  }
+
+  @Test
+  public void getVenues_returnsAllVenues_List() {
+    Venue newVenue = new Venue("Glastonburry");
+    newVenue.save();
+    Band newBand = new Band("Arctic Monkeys");
+    newBand.save();
+    newBand.addVenue(newVenue);
+    List savedVenues = newBand.getVenues();
+    assertEquals(1, savedVenues.size());
   }
 }
