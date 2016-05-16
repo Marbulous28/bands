@@ -77,6 +77,4 @@ public class VenueTest {
     List savedBands = newVenue.getBands();
     assertEquals(1, savedBands.size());
   }
-
-
 }

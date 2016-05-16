@@ -84,4 +84,16 @@ public class BandTest {
     List savedVenues = newBand.getVenues();
     assertEquals(1, savedVenues.size());
   }
+
+  @Test
+  public void delete_deletesAllBandsAndVenuesJoins() {
+    Venue newVenue = new Venue("Glastonburry");
+    newVenue.save();
+    Band newBand = new Band("Arctic");
+    newBand.save();
+    newBand.addVenue(newVenue);
+    newBand.delete();
+    assertEquals(0, newVenue.getBands().size());
+  }
+
 }
